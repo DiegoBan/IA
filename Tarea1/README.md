@@ -2,7 +2,7 @@
 
 En esta carpeta se desarrolla la tarea N°1 de Inteligencia Artificial, la cual consta de dos partes principales, a través de este README se explicará todo lo necesario para cada una de estas mismas y el resultado final almacenado en un Google Collab.
 
-### Ejecución
+### Ejecución y utilización de python
 
 Para ejecutar esto de una manera controlada y sin crear posibles errores por dependencias con otras librerías o funciones de python en nuestro computador (local), se utilizará un entorno virtual de python "virtualenv". Para la utilización de este entorno se tendrán los siguientes comandos de referencia:
 
