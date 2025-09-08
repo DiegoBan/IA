@@ -33,4 +33,4 @@ pip install -r requirements.txt
 
 ## Parte 1
 
-Para esta primera parte se utiliza la librería [pgmpy](https://pgmpy.org/index.html) y el dataset escogido fue ["Video Games Sales"](https://www.kaggle.com/datasets/gregorut/videogamesales) el cual es un ranking de los videojuegos más vendidos (última vez actualizado hace 9 años) y tiene 16598 datos. Con estos datos y tal librería se crearán dos 
+Para esta primera parte se utiliza la librería [pgmpy](https://pgmpy.org/index.html) y el dataset escogido fue ["Video Games Sales"](https://www.kaggle.com/datasets/gregorut/videogamesales) el cual es un ranking de los videojuegos más vendidos (última vez actualizado hace 9 años) y tiene 16598 datos. Con estos datos inicialmente aquellas columnas que son numéricas se discretizan (Año y ventas por región: "NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales" y "Global_Sales") en grupos de igual rango, para posteriormente separar dataset en 2 grupos uno con el 70% de los datos y otro con el restante
