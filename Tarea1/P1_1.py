@@ -40,12 +40,12 @@ print("\n========== Aristas Aprendidas (model2 scoring_method=BDeu) ==========\n
 model1 = DiscreteBayesianNetwork(model_BIC.edges())
 model2 = DiscreteBayesianNetwork(model_BDeu.edges())
 #   Estimación de parámetros:
-model1.fit(dataset70, estimator=BayesianEstimator)
+model1.fit(dataset70)
 print("\n========== Estimaciones de model1 (scoring_method=BIC) ==========\n")
 for cpd in model1.get_cpds():
     print(cpd)
 
-model2.fit(dataset70, estimator=BayesianEstimator)
+model2.fit(dataset70)
 print("\n========== Estimaciones de model2 (scoring_method=BDeu) ==========\n")
 for cpd in model2.get_cpds():
     print(cpd)
@@ -144,5 +144,7 @@ print("Validacion modelo 2: ", porc_model2, "porcieto de casos acertados")
 print("Diferencia entre modelo 1 y 2: ", abs(((fav_cases1/total_cases1)*100)-((fav_cases2/total_cases2)*100)))
 if porc_model1 > porc_model2:
     print("Mejor modelo: Model 1")
+elif porc_model1 == porc_model2:
+    print("Ambos modelos iguales")
 else:
     print("Mejor modelo: Model 2")
