@@ -137,6 +137,12 @@ for _, row in qinf.iterrows():
         progress.update(1)
 progress.close()
 
-print("Validacion modelo 1: ", (fav_cases1/total_cases1)*100, "porcieto de casos acertados")
-print("Validacion modelo 2: ", (fav_cases2/total_cases2)*100, "porcieto de casos acertados")
+porc_model1 = (fav_cases1/total_cases1)*100
+porc_model2 = (fav_cases2/total_cases2)*100
+print("Validacion modelo 1: ", porc_model1, "porcieto de casos acertados")
+print("Validacion modelo 2: ", porc_model2, "porcieto de casos acertados")
 print("Diferencia entre modelo 1 y 2: ", abs(((fav_cases1/total_cases1)*100)-((fav_cases2/total_cases2)*100)))
+if porc_model1 > porc_model2:
+    print("Mejor modelo: Model 1")
+else:
+    print("Mejor modelo: Model 2")
