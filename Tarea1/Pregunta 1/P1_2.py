@@ -38,17 +38,16 @@ synthetic = sampler.forward_sample(size=syntDataLen)
 print("Data sintetica generada: ", synthetic.shape)
 #   Concatenación de dataset con nueva sintetica
 data_cols = list(dataset.columns)
-synthetic_cols = list(synthetic.columns)
 synthetic = synthetic[data_cols]    # Reordena columnas en el orden de dataset
 new_dataset = pd.concat([dataset, synthetic], ignore_index=True)
 new_dataset = new_dataset.sample(frac=1, random_state=42).reset_index(drop=True)    # Aleatoriza orden de filas
+print("Tamaño dataset original: ", len(dataset))
 print("Nuevo tamaño de datos (dataset + sinteticos): ", len(new_dataset))
 
 
 #   Separación de datos
-dataset70 = dataset.sample(frac=0.7, random_state=42)
-dataset30 = dataset.drop(dataset70.index)
-print("Dataset discretizado y separado")
+dataset70 = new_dataset.sample(frac=0.7, random_state=42)
+dataset30 = new_dataset.drop(dataset70.index)
 print(dataset.info())
 #   Aprendizaje de estrucutra: HillClimbingSearch
 structure = HillClimbSearch(dataset70)
