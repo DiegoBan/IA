@@ -1,9 +1,9 @@
 import pandas as pd
-from pgmpy.estimators import HillClimbSearch, BIC, BDeu, BayesianEstimator
+from pgmpy.estimators import HillClimbSearch, BIC, BDeu
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.inference import VariableElimination
 import io, contextlib, logging
-logging.getLogger("pgmpy").setLevel(logging.WARNING)
+logging.getLogger("pgmpy").setLevel(logging.ERROR)
 import json
 from tqdm import tqdm
 
@@ -94,7 +94,7 @@ for _, row in qinf.iterrows():
             with contextlib.redirect_stdout(_buf_out), contextlib.redirect_stderr(_buf_err):
                 resp = infer1.map_query(variables=[target], evidence=evidences)
         except Exception as e:
-            captured: _buf_out.getvalue() + _buf_err.getvalue()
+            captured = _buf_out.getvalue() + _buf_err.getvalue()
             print("Error during inference:", e)
             if captured:
                 print("Captured output:\n", captured)
@@ -124,7 +124,7 @@ for _, row in qinf.iterrows():
             with contextlib.redirect_stdout(_buf_out), contextlib.redirect_stderr(_buf_err):
                 resp = infer2.map_query(variables=[target], evidence=evidences)
         except Exception as e:
-            captured: _buf_out.getvalue() + _buf_err.getvalue()
+            captured = _buf_out.getvalue() + _buf_err.getvalue()
             print("Error during inference:", e)
             if captured:
                 print("Captured output:\n", captured)

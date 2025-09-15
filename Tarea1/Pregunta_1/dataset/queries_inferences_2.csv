@@ -1,0 +1,13 @@
+target,evidence
+Platform,"[""Year""]"
+Platform,"[""Genre""]"
+Platform,"[""Year"",""Genre""]"
+Global_Sales,"[""NA_Sales""]"
+Global_Sales,"[""EU_Sales""]"
+Global_Sales,"[""JP_Sales""]"
+Global_Sales,"[""NA_Sales"",""EU_Sales""]"
+Global_Sales,"[""NA_Sales"",""JP_Sales""]"
+NA_Sales,"[""Global_Sales""]"
+EU_Sales,"[""Global_Sales""]"
+JP_Sales,"[""Global_Sales""]"
+Other_Sales,"[""Global_Sales""]"

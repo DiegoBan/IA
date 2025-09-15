@@ -1,10 +1,10 @@
 import pandas as pd
-from pgmpy.estimators import HillClimbSearch, BIC, BDeu, BayesianEstimator
+from pgmpy.estimators import HillClimbSearch, BIC, BDeu
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.inference import VariableElimination
 from pgmpy.sampling import BayesianModelSampling
 import io, contextlib, logging
-logging.getLogger("pgmpy").setLevel(logging.WARNING)
+logging.getLogger("pgmpy").setLevel(logging.ERROR)
 import json
 from tqdm import tqdm
 
@@ -26,29 +26,32 @@ dataset["Other_Sales"] = pd.cut(dataset["Other_Sales"], bins=3,
 dataset["Global_Sales"] = pd.cut(dataset["Global_Sales"], bins=3,
                               labels=["Low", "Mid", "High"])
 #   Generación de modelo para crear data sintetica
-structureSynt = HillClimbSearch(dataset)
-modelSynt = structureSynt.estimate(scoring_method=BDeu(dataset))
-print("\n========== Aristas Aprendidas (modelSynt) ==========\n", list(modelSynt.edges()))
-modelSyntBayes = DiscreteBayesianNetwork(modelSynt.edges())
-modelSyntBayes.fit(dataset, estimator=BayesianEstimator)
+edges = [('Platform', 'Genre'), ('Year', 'Platform'), ('Year', 'Publisher'), ('NA_Sales', 'JP_Sales'), ('EU_Sales', 'Global_Sales'), ('EU_Sales', 'Other_Sales'), ('EU_Sales', 'NA_Sales'), ('JP_Sales', 'Year'), ('Other_Sales', 'NA_Sales'), ('Global_Sales', 'NA_Sales'), ('Global_Sales', 'JP_Sales'), ('Global_Sales', 'Other_Sales')]
+print("\n========== Aristas Aprendidas (modelSynt) ==========\n", list(edges))
+modelSyntBayes = DiscreteBayesianNetwork(edges)
+modelSyntBayes.fit(dataset)
 #   Generación de data sintetica
 syntDataLen = int(len(dataset)*0.5)
 sampler = BayesianModelSampling(modelSyntBayes)
-synthetic = sampler.forward_sample(size=syntDataLen)
+synthetic = sampler.forward_sample(size=syntDataLen, seed=42)
 print("Data sintetica generada: ", synthetic.shape)
 #   Concatenación de dataset con nueva sintetica
 data_cols = list(dataset.columns)
 synthetic = synthetic[data_cols]    # Reordena columnas en el orden de dataset
 new_dataset = pd.concat([dataset, synthetic], ignore_index=True)
-new_dataset = new_dataset.sample(frac=1, random_state=42).reset_index(drop=True)    # Aleatoriza orden de filas
 print("Tamaño dataset original: ", len(dataset))
 print("Nuevo tamaño de datos (dataset + sinteticos): ", len(new_dataset))
-
+for col in data_cols:
+    # forzar todo a string (evita problemas de tipos heterogéneos)
+    new_dataset[col] = new_dataset[col].astype(str)
+    # fijar categorías a todas las observadas en new_dataset para esa columna
+    cats = sorted(new_dataset[col].unique().tolist())
+    new_dataset[col] = pd.Categorical(new_dataset[col], categories=cats)
 
 #   Separación de datos
 dataset70 = new_dataset.sample(frac=0.7, random_state=42)
 dataset30 = new_dataset.drop(dataset70.index)
-print(dataset.info())
+print(dataset70.info())
 #   Aprendizaje de estrucutra: HillClimbingSearch
 structure = HillClimbSearch(dataset70)
 model_BIC = structure.estimate(scoring_method=BIC(dataset70))
@@ -94,7 +97,7 @@ print("P(NA_Sales, EU_Sales | Global_Sales= High):\n",
       infer2.query(variables=["NA_Sales", "EU_Sales"], evidence={"Global_Sales": "High"}))
 
 #   Validación
-qinf = pd.read_csv("dataset/queries_inferences.csv")
+qinf = pd.read_csv("dataset/queries_inferences_2.csv")
 total_inferences = len(qinf) * len(dataset30)
 
 progress = tqdm(total=total_inferences, desc="Validacion 1")
@@ -114,7 +117,8 @@ for _, row in qinf.iterrows():
             with contextlib.redirect_stdout(_buf_out), contextlib.redirect_stderr(_buf_err):
                 resp = infer1.map_query(variables=[target], evidence=evidences)
         except Exception as e:
-            captured: _buf_out.getvalue() + _buf_err.getvalue()
+            print("\ntarget: ", target, "\nevidences: ", evidences_cols)
+            captured = _buf_out.getvalue() + _buf_err.getvalue()
             print("Error during inference:", e)
             if captured:
                 print("Captured output:\n", captured)
@@ -144,7 +148,7 @@ for _, row in qinf.iterrows():
             with contextlib.redirect_stdout(_buf_out), contextlib.redirect_stderr(_buf_err):
                 resp = infer2.map_query(variables=[target], evidence=evidences)
         except Exception as e:
-            captured: _buf_out.getvalue() + _buf_err.getvalue()
+            captured = _buf_out.getvalue() + _buf_err.getvalue()
             print("Error during inference:", e)
             if captured:
                 print("Captured output:\n", captured)
