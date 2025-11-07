@@ -22,17 +22,13 @@ deactivate
 
 En esta sección se detallan las librerías que utilizarán los códigos, las cuales es necesario tener instaladas en el sistema o en el entorno virtual de python en caso de estar utilizandolo.
 
-- pandas: para analisis y filtrado de dataset
+- pandas: para analisis y filtrado de dataset.
 ```
 pip install pandas
 ```
-* Otra librería
+* scikit-learn: Para uso de modelos de ML.
 ```
-pip install ola
-```
-+ otra ma
-```
-pip install ola2
+pip install scikit-learn
 ```
 
 ## Dataset
