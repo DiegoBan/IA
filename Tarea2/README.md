@@ -43,3 +43,20 @@ y finalmente guarda el dataset que se utilizará para la realización de los có
 
 
 ## Parte 2
+
+En esta segunda parte se implementa a través de SGDClassifier modelos de Regresión Logística ('log_loss') y SVM ('higne') que se entrenan con el mismo dataset anteriormente utilizado, se crean distintas instancias de estos modelos con distintos hiperparámetros para variar su funcionamiento, de esta manera se pueden estudiar los cambios generados por modificarlos. Estos modelos se están entrenando y cada 5 épocas se comparan entre sí a través de la función f1_score, aquellas con menor score se eliminan hasta quedar con las mejores 2 configuraciones.
+Finalmente los dos mejores modelos se evalúan con el conjunto del dataset separado para testing y así analizar sus resultados.
+
+### archivo de configuración
+
+El archivo de configuración es el que se encuentra en la misma ruta actual '[config_p2.txt](config_p2.txt)' y contiene la siguiente configuración de ejemplo:
+```
+3 -> cantidad de configuraciones para Regresión Lineal
+10000 0.1 -> batch size y taza de aprendizaje (alpha) de primera instancia de RL
+5000 0.5 -> batch size y taza de aprendizaje de segunda instancia
+15000 0.01 -> batch size y ... de tercera instancia
+3 -> cantidad de configuraciones para SVM
+10000 0.1 -> batch size y taza de aprendizaje (alpha) de primera instancia de SVM
+5000 0.5 -> batch size y taza de aprendizaje de segunda instancia
+15000 0.01 -> batch size y ... de tercera instancia
+```
