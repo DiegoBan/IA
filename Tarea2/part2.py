@@ -121,6 +121,7 @@ if __name__ == "__main__":
             'score': 0.0,
             'batch_index': 0
         }
+        id_contador += 1
     #   Entrenamiento
     print("==== Iniciando entrenamientos... =====")
     while len(modelos) > 2:
@@ -142,6 +143,7 @@ if __name__ == "__main__":
             for nombre, futuro in futuros.items():
                 try:
                     modelos[nombre] = futuro.result()
+                    print(f"----- Modelo: {nombre} -----\nScore:{modelos[nombre]['score']}")
                     if peor_modelo is None:
                         peor_modelo = nombre
                     elif modelos[nombre]['score'] < modelos[peor_modelo]['score']:
