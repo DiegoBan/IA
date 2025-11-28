@@ -25,7 +25,7 @@ En esta sección se detallan las librerías que utilizarán los códigos, las cu
 
 -
 ```
-
+pip install tensorflow
 ```
 *
 ```

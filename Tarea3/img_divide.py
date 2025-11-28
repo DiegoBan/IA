@@ -41,6 +41,6 @@ for cls in classes:
     #   Copia para cada grupo
     copy_files(train_files, 'training_set')
     copy_files(val_files, 'validation_set')
-    copy_files(test_files, 'testing_files')
+    copy_files(test_files, 'testing_set')
     print(f"-> {len(train_files)} a Train, -> {len(val_files)} a Validation, -> {len(test_files)} a Test")
 print("Proceso terminado")
