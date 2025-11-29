@@ -26,10 +26,10 @@ def get_datasets(batch_size):
 #   Construcción de modelo
 def build_model(architecture, kernel_size):
     model = models.Sequential()
-    model.add(layers.Rescaling(1./255, input_shape=(64, 64, 3)))
+
+    model.add(layers.Input(shape=(64, 64, 3)))
+    model.add(layers.Rescaling(1./255))
     
-    # Iteramos sobre la lista de arquitectura para crear las capas
-    # Ejemplo: si architecture es [32, 64], crea 2 bloques Conv+Pool
     for num_filters in architecture:
         model.add(layers.Conv2D(num_filters, kernel_size, activation='relu', padding='same'))
         model.add(layers.MaxPooling2D((2, 2)))
@@ -39,12 +39,14 @@ def build_model(architecture, kernel_size):
     model.add(layers.Dense(5, activation='softmax')) # 5 Clases
     return model
 
-param_grid = {  #   Parámetros a provar en sus distintas combinaciones
+#   MAIN
+
+param_grid = {  #   Parámetros a probar
     'batch_size': [32, 64],
     'epochs': [10, 15],
     'learning_rate': [0.001, 0.0001],
     'kernel_size': [(3, 3), (5, 5)],
-    'architecture': [   #   Cuantas capas y con cuantas neuronas
+    'architecture': [   #   Cuantas capas y con cuantos filtros
         [32, 64],
         [32, 64, 128]
     ]
@@ -83,7 +85,7 @@ for i, values in enumerate(combinations):   #   Probar cada combinación
         train_ds, 
         validation_data=val_ds, 
         epochs=current_params['epochs'],
-        verbose=0 
+        verbose=0
     )
 
     current_val_acc = max(history.history['val_accuracy'])
@@ -92,7 +94,7 @@ for i, values in enumerate(combinations):   #   Probar cada combinación
         best_accuracy = current_val_acc
         best_params = current_params
         best_model = model
-        model.save('best_model_temp.keras') #   Guarda mejor modelo en pc
+        #   model.save('best_model_temp.keras') #   Guarda mejor modelo en pc
         print("¡NUEVO MEJOR MODELO ENCONTRADO!")
 
 #   Resultados finales
