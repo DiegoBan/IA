@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models, optimizers
 import os
-from tqdm import tqdm  # <--- IMPORTANTE: Importamos la librería
+from tqdm import tqdm
 
 #   Obtención de dataset (tamaño específico)
 def get_datasets(batch_size):
