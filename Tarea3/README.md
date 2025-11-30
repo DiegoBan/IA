@@ -23,13 +23,17 @@ deactivate
 
 En esta sección se detallan las librerías que utilizarán los códigos, las cuales es necesario tener instaladas en el sistema o en el entorno virtual de python en caso de estar utilizandolo.
 
-- _tensorflow_ es la librería que permite crear redes neuronales convolucionales (_CNN_).
+- _tensorflow_ es la librería que permite crear redes neuronales convolucionales (_CNN_):
 ```
 pip install tensorflow
 ```
-* _tqdm_ para barras de progreso durante la ejecución
+* _tqdm_ para barras de progreso durante la ejecución:
 ```
 pip install tqdm
+```
++ Finalmente se instalan las librerías _Matplotlib_, _Seaborn_ y _Scikit-Learn_ para los análisis finales y gráficas:
+```
+pip install matplotlib seaborn scikit-learn
 ```
 
 ## Ejecución
@@ -87,13 +91,16 @@ A partir de los resultados obtenidos anteriormente se seleccionaron los siguient
 
 En cuanto a los parámetros a utilizar con dropout se utilizarán los mismos hiperparámetros del mejor modelo encontrado anteriormente, pero se debe agregar esta capa de dropout, a la cual también se le tiene que asignar un porcentaje (explicado anteriormente), para buscar qué porcentaje es mejor para el modelo y el aprendizaje se crea el código [dropout_tuning.py](./dropout_tuning.py), el cual busca el porcentaje con mayor acccuracy de entre los siguientes: [0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5].
 
-El mejor encontrado fue , por lo tanto es el que se utilizará para la arquitectura final, resultando en:
+El mejor porcentaje de dropout encontrado fue 0.2 (o 20%), por lo tanto es el que se utilizará para la arquitectura final, resultando en:
 
 - _batch size_: 128.
 * _epochs_: 20.
 + _learning rate_: 0.0001.
 - _kernel size_: (5, 5).
 * _architecture_ (cantidad de filtros en capa de convolución): 32, 64 y 128.
-+ _dropout_:
++ _dropout_: 0.2
 
 ## Comparación
+
+
+## Declaración de uso de IA
