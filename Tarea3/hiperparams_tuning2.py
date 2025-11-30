@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.keras import layers, models, optimizers
 import os
 import itertools
+from tqdm import tqdm
 
 #   Obtención de dataset (tamaño específico)
 def get_datasets(batch_size):
@@ -62,11 +63,11 @@ best_accuracy = 0.0
 best_params = {}
 best_model = None
 
-for i, values in enumerate(combinations):   #   Probar cada combinación
+for i, values in enumerate(tqdm(combinations, desc="Grid Search Progress", unit="config")):   
     current_params = dict(zip(keys, values))
     
-    print(f"\n--- Intento {i+1}/{len(combinations)} ---")
-    print(f"Probando: {current_params}")
+    tqdm.write(f"\n--- Intento {i+1}/{len(combinations)} ---")
+    tqdm.write(f"Probando: {current_params}")
 
     train_ds, val_ds = get_datasets(current_params['batch_size'])   #   Dataset a usar
 
@@ -89,12 +90,17 @@ for i, values in enumerate(combinations):   #   Probar cada combinación
     )
 
     current_val_acc = max(history.history['val_accuracy'])
-    print(f"Result -> Val Accuracy: {current_val_acc:.4f}")
+    
+    tqdm.write(f"Result -> Val Accuracy: {current_val_acc:.4f}")
+    
     if current_val_acc > best_accuracy:
         best_accuracy = current_val_acc
         best_params = current_params
         best_model = model
-        print("¡NUEVO MEJOR MODELO ENCONTRADO!")
+        tqdm.write("¡NUEVO MEJOR MODELO ENCONTRADO!")
+
+    tf.keras.backend.clear_session()
+    del model
 
 #   Resultados finales
 print("\n" + "="*50)
