@@ -64,6 +64,14 @@ A partir de los resultados de este código 1 se seleccionaron los siguientes par
 
 ## Arquitectura base
 
+A partir de los resultados obtenidos anteriormente se seleccionaron los siguientes parámetros para nuestra arquitectura base, ya que fueron con los que se obtuvieron mejores resultados:
+
+- _batch size_:
+* _epochs_:
++ _learning rate_:
+- _kernel size_:
+* _architecture_ (cantidad de filtros en capa de convolución): 
+
 ## Dropout
 
 ### Arquitectura con Dropout

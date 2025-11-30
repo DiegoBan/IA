@@ -42,11 +42,11 @@ def build_model(architecture, kernel_size):
 #   MAIN
 
 param_grid = {  #   Parámetros a probar
-    'batch_size': [32, 64],
-    'epochs': [10, 15],
-    'learning_rate': [0.001, 0.0001],
-    'kernel_size': [(3, 3), (5, 5)],
-    'architecture': [   #   Cuantas capas y con cuantos filtros
+    'batch_size': [128],
+    'epochs': [15, 20],
+    'learning_rate': [0.0001],
+    'kernel_size': [(5, 5)],
+    'architecture': [
         [32, 64],
         [32, 64, 128]
     ]
@@ -94,7 +94,6 @@ for i, values in enumerate(combinations):   #   Probar cada combinación
         best_accuracy = current_val_acc
         best_params = current_params
         best_model = model
-        #   model.save('best_model_temp.keras') #   Guarda mejor modelo en pc
         print("¡NUEVO MEJOR MODELO ENCONTRADO!")
 
 #   Resultados finales
