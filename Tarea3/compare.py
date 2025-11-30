@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+from tqdm import tqdm
 
 def get_test_dataset(batch_size):
     test_ds = tf.keras.utils.image_dataset_from_directory(
@@ -17,14 +18,16 @@ def get_test_dataset(batch_size):
     )
     return test_ds.cache().prefetch(tf.data.AUTOTUNE)
 
-def get_predictions(model, test_ds):
+def get_predictions(model, test_ds, description="Evaluando"):
     y_true = []
     y_pred = []
-    for images, labels in test_ds:
+
+    for images, labels in tqdm(test_ds, desc=description, total=len(test_ds)):
         preds = model.predict(images, verbose=0)
         preds_classes = np.argmax(preds, axis=1)
         y_true.extend(labels.numpy())
         y_pred.extend(preds_classes)
+        
     return np.array(y_true), np.array(y_pred)
 
 def plot_history_comparison(hist_no_drop, hist_drop):
@@ -74,11 +77,8 @@ with open(os.path.join(LOAD_DIR, 'history_dropout.pkl'), 'rb') as f:
 test_ds = get_test_dataset(128)
 
 #   Predicciones del modelo
-print("Evaluando modelo Sin Dropout...")
-y_true, y_pred_no_drop = get_predictions(model_no_drop, test_ds)
-
-print("Evaluando modelo Con Dropout...")
-_, y_pred_drop = get_predictions(model_drop, test_ds)
+y_true, y_pred_no_drop = get_predictions(model_no_drop, test_ds, description="Prediciendo (sin dropout)")
+_, y_pred_drop = get_predictions(model_drop, test_ds, description="Prediciendo (con dropout)")
 
 #   Calcular metricas
 acc_no_drop = accuracy_score(y_true, y_pred_no_drop)
